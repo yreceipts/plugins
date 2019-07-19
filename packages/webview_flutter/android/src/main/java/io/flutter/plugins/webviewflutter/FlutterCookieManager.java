@@ -6,7 +6,6 @@ package io.flutter.plugins.webviewflutter;
 
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import io.flutter.plugin.common.BinaryMessenger;
@@ -14,11 +13,9 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import java.lang.reflect.Array;
 import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -40,26 +37,27 @@ class FlutterCookieManager implements MethodCallHandler {
   @Override
   public void onMethodCall(MethodCall methodCall, Result result) {
     switch (methodCall.method) {
-    case "getCookies":
-      getCookies(methodCall, result);
-      break;
-    case "setCookies":
-      setCookies(methodCall, result);
-      break;
-    case "clearCookies":
-      clearCookies(result);
-      break;
-    default:
-      result.notImplemented();
+      case "getCookies":
+        getCookies(methodCall, result);
+        break;
+      case "setCookies":
+        setCookies(methodCall, result);
+        break;
+      case "clearCookies":
+        clearCookies(result);
+        break;
+      default:
+        result.notImplemented();
     }
   }
 
-  private static void getCookies(final MethodCall methodCall,
-                                 final Result result) {
+  private static void getCookies(final MethodCall methodCall, final Result result) {
     if (!(methodCall.arguments() instanceof Map)) {
-      result.error("Invalid argument. Expected Map<String,String>, received " +
-                       (methodCall.arguments().getClass().getSimpleName()),
-                   null, null);
+      result.error(
+          "Invalid argument. Expected Map<String,String>, received "
+              + (methodCall.arguments().getClass().getSimpleName()),
+          null,
+          null);
       return;
     }
 
@@ -67,8 +65,7 @@ class FlutterCookieManager implements MethodCallHandler {
 
     CookieManager cookieManager = CookieManager.getInstance();
 
-    final String allCookiesString =
-        cookieManager.getCookie(arguments.get("url"));
+    final String allCookiesString = cookieManager.getCookie(arguments.get("url"));
     final ArrayList<String> individualCookieStrings =
         new ArrayList<>(Arrays.asList(allCookiesString.split(";")));
 
@@ -86,12 +83,13 @@ class FlutterCookieManager implements MethodCallHandler {
     result.success(serializedCookies);
   }
 
-  private static void setCookies(final MethodCall methodCall,
-                                 final Result result) {
+  private static void setCookies(final MethodCall methodCall, final Result result) {
     if (!(methodCall.arguments() instanceof List)) {
-      result.error("Invalid argument. Expected List<Map<String,String>>, received " +
-                       (methodCall.arguments().getClass().getSimpleName()),
-                   null, null);
+      result.error(
+          "Invalid argument. Expected List<Map<String,String>>, received "
+              + (methodCall.arguments().getClass().getSimpleName()),
+          null,
+          null);
       return;
     }
 
@@ -113,11 +111,11 @@ class FlutterCookieManager implements MethodCallHandler {
     if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       cookieManager.removeAllCookies(
           new ValueCallback<Boolean>() {
-        @Override
-        public void onReceiveValue(Boolean value) {
-          result.success(hasCookies);
-        }
-      });
+            @Override
+            public void onReceiveValue(Boolean value) {
+              result.success(hasCookies);
+            }
+          });
     } else {
       cookieManager.removeAllCookie();
       result.success(hasCookies);

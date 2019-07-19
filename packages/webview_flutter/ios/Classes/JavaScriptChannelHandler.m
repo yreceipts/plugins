@@ -13,8 +13,7 @@
                 javaScriptChannelName:(NSString *)javaScriptChannelName {
   self = [super init];
   NSAssert(methodChannel != nil, @"methodChannel must not be null.");
-  NSAssert(javaScriptChannelName != nil,
-           @"javaScriptChannelName must not be null.");
+  NSAssert(javaScriptChannelName != nil, @"javaScriptChannelName must not be null.");
   if (self) {
     _methodChannel = methodChannel;
     _javaScriptChannelName = javaScriptChannelName;
@@ -24,8 +23,7 @@
 
 - (void)userContentController:(WKUserContentController *)userContentController
       didReceiveScriptMessage:(WKScriptMessage *)message {
-  NSAssert(_methodChannel != nil,
-           @"Can't send a message to an unitialized JavaScript channel.");
+  NSAssert(_methodChannel != nil, @"Can't send a message to an unitialized JavaScript channel.");
   NSAssert(_javaScriptChannelName != nil,
            @"Can't send a message to an unitialized JavaScript channel.");
   NSDictionary *arguments = @{

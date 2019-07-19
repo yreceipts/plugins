@@ -57,7 +57,8 @@ class AndroidWebView implements WebViewPlatform {
         // we explicitly set it here so that the widget doesn't require an ambient
         // directionality.
         layoutDirection: TextDirection.rtl,
-        creationParams: MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
+        creationParams:
+            MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
         creationParamsCodec: const StandardMessageCodec(),
       ),
     );
@@ -67,7 +68,8 @@ class AndroidWebView implements WebViewPlatform {
   Future<List<Cookie>> getCookies() => platformController?.getCookies();
 
   @override
-  Future<void> setCookies(List<Cookie> cookies) => platformController?.setCookies(cookies);
+  Future<void> setCookies(List<Cookie> cookies) =>
+      platformController?.setCookies(cookies);
 
   @override
   Future<bool> clearCookies() => platformController?.clearCookies();

@@ -12,8 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)fromNSHTTPCookie:(NSHTTPCookie *)cookie;
 
-+ (NSArray<CookieDto *> *)manyFromNSHTTPCookies:
-    (NSArray<NSHTTPCookie *> *)cookies;
++ (NSArray<CookieDto *> *)manyFromNSHTTPCookies:(NSArray<NSHTTPCookie *> *)cookies;
 
 + (NSArray<CookieDto *> *)manyFromDictionaries:
     (NSArray<NSDictionary<NSString *, NSString *> *> *)cookies;

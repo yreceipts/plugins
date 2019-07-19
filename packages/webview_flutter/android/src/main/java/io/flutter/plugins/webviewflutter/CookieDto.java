@@ -21,9 +21,13 @@ class CookieDto {
   private final String _name;
   private final String _value;
 
-  public String getName() { return this._name; }
+  public String getName() {
+    return this._name;
+  }
 
-  public String getValue() { return this._value; }
+  public String getValue() {
+    return this._value;
+  }
 
   public HttpCookie toHttpCookie() {
     return new HttpCookie(getName(), getValue());

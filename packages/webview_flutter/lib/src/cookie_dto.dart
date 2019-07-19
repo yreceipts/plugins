@@ -7,6 +7,7 @@ class CookieDto {
   static CookieDto fromCookie(Cookie cookie) {
     return CookieDto._(originalCookie: cookie);
   }
+
   static CookieDto fromJson(dynamic json) {
     return CookieDto._(
       name: json['name'],
@@ -24,7 +25,8 @@ class CookieDto {
   bool get hasOriginalCookie => originalCookie != null;
 
   Cookie toCookie() => Cookie(name, value);
-  Map<String, String> toJson() => {'name': name, 'value': value};
+  Map<String, String> toJson() =>
+      <String, String>{'name': name, 'value': value};
 
   @override
   String toString() => toCookie().toString();

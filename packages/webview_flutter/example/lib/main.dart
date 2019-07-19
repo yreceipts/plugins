@@ -31,7 +31,8 @@ class WebViewExample extends StatefulWidget {
 }
 
 class _WebViewExampleState extends State<WebViewExample> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,8 @@ class _WebViewExampleState extends State<WebViewExample> {
   Widget favoriteButton() {
     return FutureBuilder<WebViewController>(
         future: _controller.future,
-        builder: (BuildContext context, AsyncSnapshot<WebViewController> controller) {
+        builder: (BuildContext context,
+            AsyncSnapshot<WebViewController> controller) {
           if (controller.hasData) {
             return FloatingActionButton(
               onPressed: () async {
@@ -125,7 +127,8 @@ class SampleMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<WebViewController>(
       future: controller,
-      builder: (BuildContext context, AsyncSnapshot<WebViewController> controller) {
+      builder:
+          (BuildContext context, AsyncSnapshot<WebViewController> controller) {
         return PopupMenuButton<MenuOptions>(
           onSelected: (MenuOptions value) {
             switch (value) {
@@ -188,13 +191,16 @@ class SampleMenu extends StatelessWidget {
     );
   }
 
-  void _onShowUserAgent(WebViewController controller, BuildContext context) async {
+  void _onShowUserAgent(
+      WebViewController controller, BuildContext context) async {
     // Send a message with the user agent string to the Toaster JavaScript channel we registered
     // with the WebView.
-    controller.evaluateJavascript('Toaster.postMessage("User Agent: " + navigator.userAgent);');
+    controller.evaluateJavascript(
+        'Toaster.postMessage("User Agent: " + navigator.userAgent);');
   }
 
-  void _onListCookies(WebViewController controller, BuildContext context) async {
+  void _onListCookies(
+      WebViewController controller, BuildContext context) async {
     final List<Cookie> cookies = await cookieManager.getCookies();
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Column(
@@ -209,8 +215,8 @@ class SampleMenu extends StatelessWidget {
   }
 
   void _onAddToCache(WebViewController controller, BuildContext context) async {
-    await controller
-        .evaluateJavascript('caches.open("test_caches_entry"); localStorage["test_localStorage"] = "dummy_entry";');
+    await controller.evaluateJavascript(
+        'caches.open("test_caches_entry"); localStorage["test_localStorage"] = "dummy_entry";');
     Scaffold.of(context).showSnackBar(const SnackBar(
       content: Text('Added a test entry to cache.'),
     ));
@@ -240,8 +246,10 @@ class SampleMenu extends StatelessWidget {
     ));
   }
 
-  void _onNavigationDelegateExample(WebViewController controller, BuildContext context) async {
-    final String contentBase64 = base64Encode(const Utf8Encoder().convert(kNavigationExamplePage));
+  void _onNavigationDelegateExample(
+      WebViewController controller, BuildContext context) async {
+    final String contentBase64 =
+        base64Encode(const Utf8Encoder().convert(kNavigationExamplePage));
     controller.loadUrl('data:text/html;base64,$contentBase64');
   }
 
@@ -254,9 +262,13 @@ class SampleMenu extends StatelessWidget {
         text: TextSpan(
           style: TextStyle(),
           children: <InlineSpan>[
-            TextSpan(text: '${cookie.name}', style: TextStyle(fontWeight: FontWeight.bold)),
+            TextSpan(
+                text: '${cookie.name}',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             const TextSpan(text: ' = '),
-            TextSpan(text: '${cookie.value}', style: TextStyle(color: Colors.grey.shade400)),
+            TextSpan(
+                text: '${cookie.value}',
+                style: TextStyle(color: Colors.grey.shade400)),
           ],
         ),
       ),
@@ -270,7 +282,8 @@ class SampleMenu extends StatelessWidget {
 }
 
 class NavigationControls extends StatelessWidget {
-  const NavigationControls(this._webViewControllerFuture) : assert(_webViewControllerFuture != null);
+  const NavigationControls(this._webViewControllerFuture)
+      : assert(_webViewControllerFuture != null);
 
   final Future<WebViewController> _webViewControllerFuture;
 
@@ -278,8 +291,10 @@ class NavigationControls extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<WebViewController>(
       future: _webViewControllerFuture,
-      builder: (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
-        final bool webViewReady = snapshot.connectionState == ConnectionState.done;
+      builder:
+          (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
+        final bool webViewReady =
+            snapshot.connectionState == ConnectionState.done;
         final WebViewController controller = snapshot.data;
         return Row(
           children: <Widget>[
@@ -307,7 +322,8 @@ class NavigationControls extends StatelessWidget {
                         controller.goForward();
                       } else {
                         Scaffold.of(context).showSnackBar(
-                          const SnackBar(content: Text("No forward history item")),
+                          const SnackBar(
+                              content: Text("No forward history item")),
                         );
                         return;
                       }

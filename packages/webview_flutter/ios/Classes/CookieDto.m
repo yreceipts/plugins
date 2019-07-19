@@ -14,16 +14,14 @@
 }
 
 + (instancetype)fromDictionary:(NSDictionary<NSString *, NSString *> *)dict {
-  return [CookieDto initWithName:[dict valueForKey:@"name"]
-                        andValue:[dict valueForKey:@"value"]];
+  return [CookieDto initWithName:[dict valueForKey:@"name"] andValue:[dict valueForKey:@"value"]];
 }
 
 + (instancetype)fromNSHTTPCookie:(NSHTTPCookie *)cookie {
   return [CookieDto initWithName:[cookie name] andValue:[cookie value]];
 }
 
-+ (NSArray<CookieDto *> *)manyFromNSHTTPCookies:
-    (NSArray<NSHTTPCookie *> *)cookies {
++ (NSArray<CookieDto *> *)manyFromNSHTTPCookies:(NSArray<NSHTTPCookie *> *)cookies {
   NSMutableArray<CookieDto *> *accumulator = [NSMutableArray array];
   for (NSHTTPCookie *cookie in cookies) {
     [accumulator addObject:[CookieDto fromNSHTTPCookie:cookie]];
@@ -35,8 +33,7 @@
 + (NSArray<CookieDto *> *)manyFromDictionaries:
     (NSArray<NSDictionary<NSString *, NSString *> *> *)cookieDictionaries {
   NSMutableArray<CookieDto *> *accumulator = [NSMutableArray array];
-  for (NSDictionary<NSString *, NSString *>
-           *cookieDictionary in cookieDictionaries) {
+  for (NSDictionary<NSString *, NSString *> *cookieDictionary in cookieDictionaries) {
     [accumulator addObject:[CookieDto fromDictionary:cookieDictionary]];
   }
 
@@ -45,8 +42,7 @@
 
 + (NSArray<NSDictionary<NSString *, NSString *> *> *)manyToDictionary:
     (NSArray<CookieDto *> *)cookieDtos {
-  NSMutableArray<NSDictionary<NSString *, NSString *> *> *accumulator =
-      [NSMutableArray array];
+  NSMutableArray<NSDictionary<NSString *, NSString *> *> *accumulator = [NSMutableArray array];
   for (CookieDto *cookieDto in cookieDtos) {
     [accumulator addObject:[cookieDto toDictionary]];
   }
@@ -71,10 +67,7 @@
 };
 
 - (NSHTTPCookie *)toNSHTTPCookie {
-  return [NSHTTPCookie cookieWithProperties:@{
-    NSHTTPCookieName : name,
-    NSHTTPCookieValue : value
-  }];
+  return [NSHTTPCookie cookieWithProperties:@{NSHTTPCookieName : name, NSHTTPCookieValue : value}];
 }
 
 @end

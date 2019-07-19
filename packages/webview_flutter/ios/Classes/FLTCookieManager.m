@@ -13,9 +13,9 @@ WKHTTPCookieStore *cookieStore;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   FLTCookieManager *instance = [[FLTCookieManager alloc] init];
 
-  FlutterMethodChannel *channel = [FlutterMethodChannel
-      methodChannelWithName:@"plugins.flutter.io/cookie_manager"
-            binaryMessenger:[registrar messenger]];
+  FlutterMethodChannel *channel =
+      [FlutterMethodChannel methodChannelWithName:@"plugins.flutter.io/cookie_manager"
+                                  binaryMessenger:[registrar messenger]];
   [registrar addMethodCallDelegate:instance channel:channel];
 
   if (@available(iOS 11.0, *)) {
@@ -42,16 +42,13 @@ WKHTTPCookieStore *cookieStore;
 
 - (void)getCookies:(FlutterResult)result API_AVAILABLE(ios(11.0)) {
   [cookieStore getAllCookies:^(NSArray<NSHTTPCookie *> *cookies) {
-    NSArray *serialized =
-        [CookieDto manyToDictionary:[CookieDto manyFromNSHTTPCookies:cookies]];
+    NSArray *serialized = [CookieDto manyToDictionary:[CookieDto manyFromNSHTTPCookies:cookies]];
     result(serialized);
   }];
 }
 
-- (void)setCookies:(FlutterMethodCall *)call
-            result:(FlutterResult)result API_AVAILABLE(ios(11.0)) {
-  NSArray<CookieDto *> *cookieDtos =
-      [CookieDto manyFromDictionaries:[call arguments]];
+- (void)setCookies:(FlutterMethodCall *)call result:(FlutterResult)result API_AVAILABLE(ios(11.0)) {
+  NSArray<CookieDto *> *cookieDtos = [CookieDto manyFromDictionaries:[call arguments]];
   for (CookieDto *cookieDto in cookieDtos) {
     [cookieStore setCookie:[cookieDto toNSHTTPCookie]
          completionHandler:^(){
