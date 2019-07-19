@@ -1,15 +1,21 @@
 import 'dart:io';
 
-class CookieDto {
-  CookieDto._({String name, String value, this.originalCookie})
-      : _name = name,
-        _value = value;
-  static CookieDto fromCookie(Cookie cookie) {
-    return CookieDto._(originalCookie: cookie);
-  }
+import 'package:meta/meta.dart';
 
-  static CookieDto fromJson(dynamic json) {
-    return CookieDto._(
+class CookieDto {
+  CookieDto({
+    @required String name,
+    @required String value,
+  })  : _name = name,
+        _value = value,
+        originalCookie = null;
+
+  CookieDto.fromCookie(this.originalCookie)
+      : _name = null,
+        _value = null;
+
+  factory CookieDto.fromJson(dynamic json) {
+    return CookieDto(
       name: json['name'],
       value: json['value'],
     );

@@ -111,7 +111,7 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
         .invokeListMethod<dynamic>(
             'getCookies', <String, String>{'url': await currentUrl()});
     final List<Cookie> cookies = serialized
-        .map(CookieDto.fromJson)
+        .map((dynamic cookieJson) => CookieDto.fromJson(cookieJson))
         .map((CookieDto dto) => dto.toCookie())
         .toList();
     return cookies;
@@ -120,7 +120,7 @@ class MethodChannelWebViewPlatform implements WebViewPlatformController {
   /// Method channel implementation for [WebViewPlatform.setCookies].
   Future<void> setCookies(List<Cookie> cookies) async {
     final List<Map<String, String>> serialized = cookies
-        .map(CookieDto.fromCookie)
+        .map((Cookie cookie) => CookieDto.fromCookie(cookie))
         .map((CookieDto dto) => dto.toJson())
         .toList();
     await _cookieManagerChannel.invokeMethod<void>('setCookies', serialized);
