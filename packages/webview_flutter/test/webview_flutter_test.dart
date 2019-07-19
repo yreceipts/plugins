@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:_http';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -11,6 +12,7 @@ import 'package:flutter/src/gestures/recognizer.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:webview_flutter/platform_interface.dart';
+import 'package:webview_flutter/src/webview_method_channel.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 typedef void VoidCallback();
@@ -1037,6 +1039,9 @@ class MyWebViewPlatform implements WebViewPlatform {
   MyWebViewPlatformController lastPlatformBuilt;
 
   @override
+  MethodChannelWebViewPlatform platformController;
+
+  @override
   Widget build({
     BuildContext context,
     CreationParams creationParams,
@@ -1054,6 +1059,16 @@ class MyWebViewPlatform implements WebViewPlatform {
   @override
   Future<bool> clearCookies() {
     return Future<bool>.sync(() => null);
+  }
+
+  @override
+  Future<List<Cookie>> getCookies() {
+    return Future<List<Cookie>>.sync(() => null);
+  }
+
+  @override
+  Future<void> setCookies(List<Cookie> cookies) {
+    return Future<void>.sync(() => null);
   }
 }
 

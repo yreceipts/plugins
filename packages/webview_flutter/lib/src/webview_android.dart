@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -18,6 +19,9 @@ import 'webview_method_channel.dart';
 /// an [AndroidView] to embed the webview in the widget hierarchy, and uses a method channel to
 /// communicate with the platform code.
 class AndroidWebView implements WebViewPlatform {
+  @override
+  MethodChannelWebViewPlatform platformController;
+
   @override
   Widget build({
     BuildContext context,
@@ -43,21 +47,28 @@ class AndroidWebView implements WebViewPlatform {
           if (onWebViewPlatformCreated == null) {
             return;
           }
-          onWebViewPlatformCreated(MethodChannelWebViewPlatform(
-              id, webViewPlatformCallbacksHandler));
+          final MethodChannelWebViewPlatform newPlatformController =
+              MethodChannelWebViewPlatform(id, webViewPlatformCallbacksHandler);
+          platformController = newPlatformController;
+          onWebViewPlatformCreated(newPlatformController);
         },
         gestureRecognizers: gestureRecognizers,
         // WebView content is not affected by the Android view's layout direction,
         // we explicitly set it here so that the widget doesn't require an ambient
         // directionality.
         layoutDirection: TextDirection.rtl,
-        creationParams:
-            MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
+        creationParams: MethodChannelWebViewPlatform.creationParamsToMap(creationParams),
         creationParamsCodec: const StandardMessageCodec(),
       ),
     );
   }
 
   @override
-  Future<bool> clearCookies() => MethodChannelWebViewPlatform.clearCookies();
+  Future<List<Cookie>> getCookies() => platformController?.getCookies();
+
+  @override
+  Future<void> setCookies(List<Cookie> cookies) => platformController?.setCookies(cookies);
+
+  @override
+  Future<bool> clearCookies() => platformController?.clearCookies();
 }
