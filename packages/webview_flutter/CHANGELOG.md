@@ -1,3 +1,8 @@
+
+## 0.4.0
+
+* Add getters and setters for cookies in the `CookieManager`.
+
 ## 0.3.10+3
 
 * Don't log an unknown setting key error for 'debuggingEnabled' on iOS.

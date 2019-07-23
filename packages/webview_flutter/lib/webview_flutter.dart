@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -351,9 +352,10 @@ WebSettings _clearUnchangedWebSettings(
   }
 
   return WebSettings(
-      javascriptMode: javascriptMode,
-      hasNavigationDelegate: hasNavigationDelegate,
-      debuggingEnabled: debuggingEnabled);
+    javascriptMode: javascriptMode,
+    hasNavigationDelegate: hasNavigationDelegate,
+    debuggingEnabled: debuggingEnabled,
+  );
 }
 
 Set<String> _extractChannelNames(Set<JavascriptChannel> channels) {
@@ -383,8 +385,10 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
 
   @override
   bool onNavigationRequest({String url, bool isForMainFrame}) {
-    final NavigationRequest request =
-        NavigationRequest._(url: url, isForMainFrame: isForMainFrame);
+    final NavigationRequest request = NavigationRequest._(
+      url: url,
+      isForMainFrame: isForMainFrame,
+    );
     final bool allowNavigation = _widget.navigationDelegate == null ||
         _widget.navigationDelegate(request) == NavigationDecision.navigate;
     return allowNavigation;
@@ -581,9 +585,25 @@ class CookieManager {
 
   static CookieManager _instance;
 
+  /// Gets the current cookies.
+  ///
+  /// This is a no op on iOS versions smaller than 11.
+  ///
+  /// On iOS, returns all cookies from the [WebView] instance.
+  /// On Android, only returns the cookies for the current URL from the [WebView] instance.
+  Future<List<Cookie>> getCookies() => WebView.platform.getCookies();
+
+  /// Sets the specified cookies.
+  ///
+  /// This is a no op on iOS versions smaller than 11.
+  ///
+  /// `cookies` must not be null.
+  Future<void> setCookies(List<Cookie> cookies) =>
+      WebView.platform.setCookies(cookies);
+
   /// Clears all cookies for all [WebView] instances.
   ///
-  /// This is a no op on iOS version smaller than 9.
+  /// This is a no op on iOS versions smaller than 9.
   ///
   /// Returns true if cookies were present before clearing, else false.
   Future<bool> clearCookies() => WebView.platform.clearCookies();
